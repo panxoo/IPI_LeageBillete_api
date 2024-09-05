@@ -10,6 +10,8 @@ namespace LeageBillete_api.Model.DTO
         public float Price_unit { get; set; }
         [Required(ErrorMessage = "Quantite ticket min obligatoire")]
         public int Quantite_ticket_min { get; set; }
+        public bool Prix_eleve { get; set; } = false;
+
         public bool Is_all_event { get; set; } = false;
     }
 }

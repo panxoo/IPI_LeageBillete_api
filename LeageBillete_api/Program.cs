@@ -72,7 +72,10 @@ builder.Services.AddIdentityCore<IdentityUser>(options =>
 builder.Services.AddScoped<TokenService, TokenService>();
 builder.Services.AddScoped<IBilletAdmin, BilletAdmin>();
 builder.Services.AddScoped<IAuthentification, Authentification>();
+builder.Services.AddScoped<IReserveTicket, ReserveTicket>();
 
+
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 
 

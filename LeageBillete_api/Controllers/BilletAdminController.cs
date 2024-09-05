@@ -1,6 +1,7 @@
 ﻿using LeageBillete_api.Data;
 using LeageBillete_api.Interfaces;
 using LeageBillete_api.Model.DTO;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -24,11 +25,29 @@ namespace LeageBillete_api.Controllers
             return Ok(_billetAdmin.leagesActives());
         }
 
-        [HttpGet]
+        [HttpPost]
         [Route("addEvent")]
+        [Authorize]
         public async Task<IActionResult> addEvent(Event_leage_DTO eventLeage)
         {
-            return Ok();
+            try
+            {
+                return Ok(await _billetAdmin.addEvent(eventLeage));
+
+            }
+            catch (Exception ex)
+            {
+            return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet]
+        [Route("eventdetaillist")]
+       [Authorize]
+        public async Task<IActionResult> eventDetailList()
+        {
+            return Ok(await _billetAdmin.eventDetailList());
+
         }
     }
 }

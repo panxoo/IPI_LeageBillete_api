@@ -8,7 +8,7 @@
         public string Lastname_facture { get;set; }
         public string Address_facture { get; set; }
         public string Email {  get; set; }
-        public DateTime Date_purchase { get; set; }
+        public DateTime Date_purchase { get; set; } = DateTime.Now;
         public string Code_reserva { get; set; }
         public List<Detail_purchase>  Detail_Purchases { get; set; }
 

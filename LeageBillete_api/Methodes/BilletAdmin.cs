@@ -4,6 +4,7 @@ using LeageBillete_api.Interfaces;
 using LeageBillete_api.Model.DataBase;
 using LeageBillete_api.Model.DTO;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace LeageBillete_api.Methodes
 {
@@ -55,6 +56,21 @@ namespace LeageBillete_api.Methodes
                  }).ToList()
                 }).ToListAsync();
         }
+
+        public async Task<bool> desactiveEvent(int enventId)
+        {
+            List<Event_day> eventDays =  await _context.Event_Days.Where(w => w.Event_Leage.Event_leageId == enventId && w.IsActif).ToListAsync();
+
+            if(eventDays.Count == 0)
+                throw new Exception("L'événtment ne trouve pas");
+
+            eventDays.ForEach(f => { f.IsActif = false; });
+
+            _context.Update(eventDays);
+            return true;
+
+        }
+         
 
     }
 }

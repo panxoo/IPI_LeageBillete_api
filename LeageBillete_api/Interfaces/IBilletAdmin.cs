@@ -8,5 +8,6 @@ namespace LeageBillete_api.Interfaces
         Task<List<Event_leage>> leagesActives();
         Task<bool> addEvent(Event_leage_DTO eventLeage);
         Task<List<Event_leage_details>> eventDetailList();
+        Task<bool> desactiveEvent(int eventId); 
     }
 }

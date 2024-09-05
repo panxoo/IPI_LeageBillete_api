@@ -49,6 +49,25 @@ namespace LeageBillete_api.Controllers
             }
         }
 
+        [HttpPost]
+        [Route("desactiveEvent")]
+        [Authorize]
+        public async Task<IActionResult> desactiveEvent(int eventid)
+        {
+            try
+            {
+                return Ok(await _billetAdmin.desactiveEvent(eventid));
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+
+     
+
         [HttpGet]
         [Route("eventdetaillist")]
         [Authorize]

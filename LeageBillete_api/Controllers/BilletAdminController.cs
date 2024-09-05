@@ -1,8 +1,6 @@
-﻿using LeageBillete_api.Data;
-using LeageBillete_api.Interfaces;
+﻿using LeageBillete_api.Interfaces;
 using LeageBillete_api.Model.DTO;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LeageBillete_api.Controllers
@@ -13,16 +11,26 @@ namespace LeageBillete_api.Controllers
     {
 
         private readonly IBilletAdmin _billetAdmin;
-         
-        public BilletAdminController( IBilletAdmin billetAdmin) { 
-        
+
+        public BilletAdminController(IBilletAdmin billetAdmin)
+        {
+
             _billetAdmin = billetAdmin;
         }
 
         [HttpGet]
         [Route("leagesActives")]
-        public async Task<IActionResult> leagesActives() {             
-            return Ok(_billetAdmin.leagesActives());
+        [Authorize]
+        public async Task<IActionResult> leagesActives()
+        {
+            try
+            {
+                return Ok(await _billetAdmin.leagesActives());
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         [HttpPost]
@@ -37,17 +45,23 @@ namespace LeageBillete_api.Controllers
             }
             catch (Exception ex)
             {
-            return BadRequest(ex.Message);
+                return BadRequest(ex.Message);
             }
         }
 
         [HttpGet]
         [Route("eventdetaillist")]
-       [Authorize]
+        [Authorize]
         public async Task<IActionResult> eventDetailList()
         {
-            return Ok(await _billetAdmin.eventDetailList());
-
+            try
+            {
+                return Ok(await _billetAdmin.eventDetailList());
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
     }
 }

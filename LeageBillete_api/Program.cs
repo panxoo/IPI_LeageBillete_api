@@ -1,5 +1,8 @@
 using LeageBillete_api.Data;
+using LeageBillete_api.Interfaces;
+using LeageBillete_api.Methodes;
 using LeageBillete_api.Model.Setting;
+using LeageBillete_api.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -30,7 +33,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                         ClockSkew = TimeSpan.Zero,
                         ValidateIssuer = true,
                         ValidateAudience = true,
-                        ValidateLifetime = true,
+                        ValidateLifetime = false,
                         ValidateIssuerSigningKey = true,
                         ValidIssuer = builder.Configuration["Tokens:Issuer"],
                         ValidAudience = builder.Configuration["Tokens:Issuer"],
@@ -66,12 +69,35 @@ builder.Services.AddIdentityCore<IdentityUser>(options =>
     .AddEntityFrameworkStores<ApplicationDbContext>()
  .AddDefaultTokenProviders();
 
+builder.Services.AddScoped<TokenService, TokenService>();
+builder.Services.AddScoped<IBilletAdmin, BilletAdmin>();
+builder.Services.AddScoped<IAuthentification, Authentification>();
+
+
+
+
 
 builder.Services.AddControllers();
 
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
+
+// Ejecutar inicialización
+using (var scope = app.Services.CreateScope())
+{
+    var authentification = scope.ServiceProvider.GetRequiredService<IAuthentification>();
+    await authentification.DataIni();
+}
+
+app.UseCors(builder =>
+
+    builder.SetIsOriginAllowed(origin => true)
+           .AllowAnyMethod()
+           .AllowAnyHeader()
+           .AllowCredentials()
+);
+
 
 app.UseHttpsRedirection();
 
